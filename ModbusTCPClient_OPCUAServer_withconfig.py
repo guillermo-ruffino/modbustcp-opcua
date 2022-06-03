@@ -113,7 +113,9 @@ if __name__ == "__main__":
                             opc_var.set_value(modbus_value)
                         elif old_value != opc_value:
                             node_config["old_value"] = opc_value
-                            print("Value change detected in opc: " + repr(opc_value))
+                            print(
+                                f"Value change detected in opc: {node_config['name']}={repr(opc_value)}"
+                            )
                             if node_config["type"] == "boolean":
                                 temp_value = result.registers[0]
                                 if opc_value:
