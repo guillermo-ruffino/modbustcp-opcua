@@ -22,12 +22,6 @@ nodes:
         #mn1 drvr
         # full
         - variable_node:
-            name: "mn1_drvr_full_cnv_pp_empty"
-            type: "boolean"
-            modbus_type: "holding_register"
-            modbus_address: 12388
-            modbus_bit: 0
-        - variable_node:
             name: "mn1_drvr_full_agv_number"
             type: "word"
             modbus_type: "holding_register"
@@ -75,12 +69,6 @@ nodes:
 
         #mn1 psgr
         # full
-        - variable_node:
-            name: "mn1_psgr_full_cnv_pp_empty"
-            type: "boolean"
-            modbus_type: "holding_register"
-            modbus_address: 12408
-            modbus_bit: 0
         - variable_node:
             name: "mn1_psgr_full_agv_number"
             type: "word"
@@ -130,12 +118,6 @@ nodes:
         #mn1 rear
         # full
         - variable_node:
-            name: "mn1_rear_full_cnv_pp_empty"
-            type: "boolean"
-            modbus_type: "holding_register"
-            modbus_address: 12428
-            modbus_bit: 0
-        - variable_node:
             name: "mn1_rear_full_agv_number"
             type: "word"
             modbus_type: "holding_register"
@@ -183,12 +165,6 @@ nodes:
 
         #mn2 drvr
         # full
-        - variable_node:
-            name: "mn2_drvr_full_cnv_pp_empty"
-            type: "boolean"
-            modbus_type: "holding_register"
-            modbus_address: 12488
-            modbus_bit: 0
         - variable_node:
             name: "mn2_drvr_full_agv_number"
             type: "word"
@@ -238,12 +214,6 @@ nodes:
         #mn2 psgr
         # full
         - variable_node:
-            name: "mn2_psgr_full_cnv_pp_empty"
-            type: "boolean"
-            modbus_type: "holding_register"
-            modbus_address: 12508
-            modbus_bit: 0
-        - variable_node:
             name: "mn2_psgr_full_agv_number"
             type: "word"
             modbus_type: "holding_register"
@@ -291,12 +261,6 @@ nodes:
 
         #mn2 rear
         # full
-        - variable_node:
-            name: "mn2_rear_full_cnv_pp_empty"
-            type: "boolean"
-            modbus_type: "holding_register"
-            modbus_address: 12528
-            modbus_bit: 0
         - variable_node:
             name: "mn2_rear_full_agv_number"
             type: "word"
@@ -383,6 +347,12 @@ nodes:
             modbus_address: 12600
             modbus_bit: 8
             opc_writable: True
+        - variable_node:
+            name: "mn1_sout_load_type"
+            type: "word"
+            modbus_type: "holding_register"
+            modbus_address: 12601
+            opc_writable: True
         # mty_in02
         - variable_node:
             name: "mty_in02_agv_number"
@@ -422,4 +392,10 @@ nodes:
             modbus_type: "holding_register"
             modbus_address: 12620
             modbus_bit: 8
+            opc_writable: True
+        - variable_node:
+            name: "mn2_sout_load_type"
+            type: "word"
+            modbus_type: "holding_register"
+            modbus_address: 12621
             opc_writable: True
