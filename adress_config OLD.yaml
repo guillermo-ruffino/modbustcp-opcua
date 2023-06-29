@@ -480,7 +480,38 @@ nodes:
             modbus_bit: 0
             opc_writable: True
 
-        
+        # mty_in01
+        - variable_node:
+            name: "mty_in01_agv_number"
+            type: "word"
+            modbus_type: "holding_register"
+            modbus_address: 12589
+            opc_writable: True
+        - variable_node:
+            name: "mty_in01_cnv_ok_to_leave"
+            type: "boolean"
+            modbus_type: "holding_register"
+            modbus_address: 12590
+            modbus_bit: 0
+        - variable_node:
+            name: "mty_in01_agv_leaving"
+            type: "boolean"
+            modbus_type: "holding_register"
+            modbus_address: 12590
+            modbus_bit: 8
+            opc_writable: True
+        - variable_node:
+            name: "mty_in01_sim_station_down"
+            type: "boolean"
+            modbus_type: "holding_register"
+            modbus_address: 12591
+            modbus_bit: 0
+            opc_writable: True
+        - variable_node:
+            name: "mty_in01_remaining"
+            type: "word"
+            modbus_type: "holding_register"
+            modbus_address: 12593
         # mn1_sout
         - variable_node:
             name: "mn1_sout_agv_number"
@@ -519,7 +550,38 @@ nodes:
             type: "word"
             modbus_type: "holding_register"
             modbus_address: 12603
-        
+        # mty_in02
+        - variable_node:
+            name: "mty_in02_agv_number"
+            type: "word"
+            modbus_type: "holding_register"
+            modbus_address: 12609
+            opc_writable: True
+        - variable_node:
+            name: "mty_in02_cnv_ok_to_leave"
+            type: "boolean"
+            modbus_type: "holding_register"
+            modbus_address: 12610
+            modbus_bit: 0
+        - variable_node:
+            name: "mty_in02_agv_leaving"
+            type: "boolean"
+            modbus_type: "holding_register"
+            modbus_address: 12610
+            modbus_bit: 8
+            opc_writable: True
+        - variable_node:
+            name: "mty_in02_sim_station_down"
+            type: "boolean"
+            modbus_type: "holding_register"
+            modbus_address: 12611
+            modbus_bit: 0
+            opc_writable: True
+        - variable_node:
+            name: "mty_in02_remaining"
+            type: "word"
+            modbus_type: "holding_register"
+            modbus_address: 12613
 
         # mn2_sout
         - variable_node:

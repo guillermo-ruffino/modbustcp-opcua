@@ -15,14 +15,20 @@ sys.path.insert(0, "..")
 type_dic = {
     "float": ua.VariantType.Float,
     "int": ua.VariantType.Int32,
+    "byte": ua.VariantType.Byte,
     "word": ua.VariantType.Int16,
     "boolean": ua.VariantType.Boolean,
 }
 
 var_dic = {}
+modbus_poll_address = 0
+modbus_last_address = 0
 
 # recursive function for adding of nodes from address-config.yaml to OPC UA Server
 def add_nodes(config_nodes, mount_node):
+    global modbus_poll_address
+    global modbus_last_address
+
     for config_node in config_nodes:
         if "object_node" in config_node:
             object_node = mount_node.add_object(idx, config_node["object_node"]["name"])
@@ -30,6 +36,11 @@ def add_nodes(config_nodes, mount_node):
                 add_nodes(config_node["object_node"]["nodes"], object_node)
         if "variable_node" in config_node:
             var_config = config_node["variable_node"]
+            ma = var_config.get("modbus_address")
+            if modbus_poll_address == 0 or ma < modbus_poll_address:
+                modbus_poll_address = ma
+            if modbus_last_address < ma:
+                modbus_last_address = ma
             variable_node = mount_node.add_variable(
                 "s=" + var_config["name"],
                 var_config["name"],
@@ -87,24 +98,49 @@ if __name__ == "__main__":
         config["modbustcp_remote_server"]["port"],
     )
 
+    register_count = modbus_last_address - modbus_poll_address + 1
+
+    print(
+        f"Polling {register_count} modbus registers. Start address: {modbus_poll_address}"
+    )
+
     try:
         while True:
+
+            try:
+                result = modbustcp_client.read_holding_registers(
+                    modbus_poll_address, register_count
+                )
+            except Exception as ex:
+                print(ex)
+                continue
+
+            if isinstance(result, Exception):
+                print(result)
+                continue
+
             for opc_var, node_config in var_dic.items():
                 if node_config["modbus_type"] == "holding_register":
-                    result = modbustcp_client.read_holding_registers(
-                        node_config["modbus_address"], 1
-                    )
 
+                    register_index = node_config["modbus_address"] - modbus_poll_address
+                    register_data = result.registers[register_index]
                     if hasattr(result, "message"):
                         # modbus tcp communication error
                         print(result.message)
                     else:
                         if node_config["type"] == "boolean":
                             modbus_value = bool(
-                                result.registers[0] & (0b1 << node_config["modbus_bit"])
+                                register_data & (0b1 << node_config["modbus_bit"])
                             )
+                        elif node_config["type"] == "byte":
+                            low_byte = node_config["modbus_bit"] == 0
+                            if low_byte:
+                                modbus_value = register_data & 0xFF
+                            else:  # high byte
+                                modbus_value = register_data >> 8
                         else:
-                            modbus_value = result.registers[0]
+                            modbus_value = register_data
+                        # print(f"Read from plc {node_config['name']} {modbus_value}")
                         opc_value = opc_var.get_value()
                         old_value = node_config.get("old_value")
                         if old_value != modbus_value:
@@ -117,7 +153,7 @@ if __name__ == "__main__":
                                 f"Value change detected in opc: {node_config['name']}={repr(opc_value)}"
                             )
                             if node_config["type"] == "boolean":
-                                temp_value = result.registers[0]
+                                temp_value = register_data
                                 if opc_value:
                                     temp_value = temp_value | (
                                         0b1 << node_config["modbus_bit"]

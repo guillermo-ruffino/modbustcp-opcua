@@ -1,3 +1,8 @@
+
+# Run opc ua server for wago sim plc
+
+python ModbusTCPClient_OPCUAServer_withconfig.py
+
 # Modbus TCP Client - OPC UA Server Example
 
 ```ModbusTCPClient_OPCUAServer_simple.py``` is an example how an adapter between a Modbus TCP Server (Master) and an OPC CLient could be realised with python.
